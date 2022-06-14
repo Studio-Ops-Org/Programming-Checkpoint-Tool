@@ -65,7 +65,7 @@ Description: First Time Setup File -> Creates the tables in DB and Adds Admin
                 $hash2 = crypt($adminpass,$salt);
 
                 //using prepare statement to add the data to database
-                $insertQuery = "INSERT INTO admin(firstName,lastName,userName,password,adminPassword,courseSub,tab) VALUES(:first,:last,:userName,:password,:adminPassword,:courseSub,:tab)";
+                $insertQuery = "INSERT INTO admin(firstName,lastName,userName,'password',adminPassword,courseSub,tab) VALUES(:'first',:'last',:userName,:'password',:adminPassword,:courseSub,:tab)";
                 $stmt = $pdo->prepare($insertQuery);
                 $stmt->bindParam(':first',$name);
                 $stmt->bindParam(':last',$surname);
@@ -244,14 +244,7 @@ Description: First Time Setup File -> Creates the tables in DB and Adds Admin
                 $west = $toolArray[5];
                         
                 $insertQuery ="INSERT into tool(tableNamex,tableNamey,northLabel,southLabel,eastLabel,westLabel) VALUES('$tableNamex','$tableNamey','$north','$south','$east','$west')";
-                $stmt = $pdo->prepare($insertQuery);
-                $stmt->bindParam(':tableNamex',$tableNamex);
-                $stmt->bindParam(':tableNamey',$tableNamey);
-                $stmt->bindParam(':northLabel',$north);
-                $stmt->bindParam(':southLabel',$south);
-                $stmt->bindParam(':westLabel',$east);
-                $stmt->bindParam(':eastLabel',$west);
-                $stmt->execute();
+                $pdo->exec($insertQuery);
 
             }
                 fclose($toolFile);

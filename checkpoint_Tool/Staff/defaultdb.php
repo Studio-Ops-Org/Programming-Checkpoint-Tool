@@ -210,12 +210,7 @@ if (isset($_POST['upload'])){
                             
                                 //Prepared statement used for inserting to ensure security
                                 $insertQuery ="INSERT into students(studentNumber,firstName,lastName,userName) VALUES('$studentNumber','$first','$last','$userName')";
-                                $stmt = $pdo->prepare($insertQuery);
-                                $stmt->bindParam(':sailorID',$studentNumber);
-                                $stmt->bindParam(':first',$first);
-                                $stmt->bindParam(':last',$last);
-                                $stmt->bindParam(':userName',$userName);
-                                $stmt->execute();
+                                $pdo->exec($insertQuery);
                             }
                             else {
                                 $message = "There is an error with the CSV file uploaded!. Try checking the CSV file format before Resetting.";
@@ -241,7 +236,7 @@ if (isset($_POST['upload'])){
 
          try
          {
-             $selectString = "SELECT DISTINCT studentNumber,firstname,lastname,userName FROM students;";
+             $selectString = "SELECT DISTINCT studentNumber,firstName,lastName,userName FROM students;";
              $result = $pdo->query($selectString);
          }
          catch(PDOException $e)

@@ -232,6 +232,11 @@ Description: First Time Setup File -> Creates the tables in DB and Adds Admin
             //Insert data into Position table by reading data from a CSV file
             
         $toolFile = fopen("tool.csv","r");
+
+        if (!$toolFile) {
+            echo "<h1> Error. No tool file found </h1>\n";
+            exit;
+        }
             
             while (!feof($toolFile)) 
             {
@@ -243,19 +248,10 @@ Description: First Time Setup File -> Creates the tables in DB and Adds Admin
                 $east = $toolArray[4];
                 $west = $toolArray[5];
                         
-                $insertQuery ="INSERT into tool(tableNamex,tableNamey,northLabel,southLabel,eastLabel,westLabel) VALUES('$tableNamex','$tableNamey','$north','$south','$east','$west')";
-                $stmt = $pdo->prepare($insertQuery);
-                $stmt->bindParam(':tableNamex',$tableNamex);
-                $stmt->bindParam(':tableNamey',$tableNamey);
-                $stmt->bindParam(':northLabel',$north);
-                $stmt->bindParam(':southLabel',$south);
-                $stmt->bindParam(':westLabel',$east);
-                $stmt->bindParam(':eastLabel',$west);
-                $stmt->execute();
-
+                $insertQuery ="INSERT INTO tool(tableNamex,tableNamey,northLabel,southLabel,eastLabel,westLabel) VALUES('$tableNamex','$tableNamey','$north','$south','$east','$west')";
+                $pdo->exec($insertQuery);
             }
-                fclose($toolFile);
-
+            fclose($toolFile);
         }
         catch(PDOException $e)
         {
